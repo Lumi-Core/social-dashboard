@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Agent Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/analytics.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Agentic" class="logo-img">
+                <span>Social Media Agent</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-menu">
+            <ul class="nav-list">
+                <li class="nav-item active" data-page="dashboard">
+                    <a href="#dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="analytics">
+                    <a href="#analytics">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Analytics Insights</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="calendar">
+                    <a href="#calendar">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Content Calendar</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="workflow">
+                    <a href="#workflow">
+                        <i class="fas fa-cogs"></i>
+                        <span>Workflow</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="tracking">
+                    <a href="#tracking">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Post Tracking</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="metrics">
+                    <a href="#metrics">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram Metrics</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="approvals">
+                    <a href="#approvals">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Approvals</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="tasks">
+                    <a href="#tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>Agent Tasks</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="logs">
+                    <a href="#logs">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Error Logs</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <a href="#settings">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="health-indicator" id="healthIndicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1 id="pageTitle">Dashboard</h1>
+                <span class="breadcrumb" id="breadcrumb">Home / Dashboard</span>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." id="globalSearch">
+                </div>
+                <button class="btn btn-icon" id="refreshBtn" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="btn btn-icon" id="notificationBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="User" class="avatar">
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content Container -->
+        <div class="page-content" id="pageContent">
+            <!-- Dashboard Page -->
+            <section class="page" id="page-dashboard">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-scheduled">0</h3>
+                            <p>Scheduled Posts</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Today</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-published">0</h3>
+                            <p>Published Posts</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>This Week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-pending">0</h3>
+                            <p>Pending Approval</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-clock"></i>
+                            <span>Awaiting</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-workflows">0</h3>
+                            <p>Total Workflows</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-history"></i>
+                            <span>All Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-card wide">
+                        <div class="card-header">
+                            <h3>System Health Status</h3>
+                            <button class="btn btn-sm" id="refreshHealthBtn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="health-grid" id="healthGrid">
+                            <!-- Health items populated by JS -->
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="action-btn" id="runDailyWorkflow">
+                                <i class="fas fa-play"></i>
+                                <span>Run Daily Workflow</span>
+                            </button>
+                            <button class="action-btn" id="addNewPost">
+                                <i class="fas fa-plus"></i>
+                                <span>Add New Post</span>
+                            </button>
+                            <button class="action-btn" id="refreshMetrics">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Refresh Metrics</span>
+                            </button>
+                            <button class="action-btn" id="viewPendingApprovals">
+                                <i class="fas fa-check-circle"></i>
+                                <span>View Approvals</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Scheduler Status</h3>
+                            <button class="btn btn-sm btn-primary" id="triggerScheduler">
+                                <i class="fas fa-bolt"></i> Trigger Now
+                            </button>
+                        </div>
+                        <div class="scheduler-info" id="schedulerInfo">
+                            <!-- Scheduler info populated by JS -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Today's Posts</h3>
+                            <a href="#calendar" class="link">View All</a>
+                        </div>
+                        <div class="today-posts" id="todayPosts">
+                            <!-- Today's posts populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Insights Page -->
+            <section class="page hidden" id="page-analytics">
+                    <div class="page-header">
+                        <div class="header-actions analytics-header-controls">
+                            <select id="analyticsDateRange">
+                                <option value="all">All Time</option>
+                                <option value="30">Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="7">Last 7 Days</option>
+                            </select>
+                            <button class="btn btn-secondary" id="exportAnalyticsReport">
+                                <i class="fas fa-download"></i> Export Report
+                            </button>
+                            <button class="btn btn-primary" id="refreshAnalytics">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Summary -->
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-chart-pie"></i> Key Performance Indicators</div>
+                                <div class="analytics-section-subtitle">Core metrics that define your Instagram performance</div>
+                            </div>
+                        </div>
+                        <div class="analytics-kpi-grid" id="analyticsKPIGrid"></div>
+                    </div>
+
+                    <!-- Engagement Breakdown -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-hand-pointer" style="color: var(--primary); margin-right: 8px;"></i> Engagement Breakdown</h3>
+                                <span class="analytics-section-subtitle">How your audience interacts with your content</span>
+                            </div>
+                            <div class="engagement-breakdown-card" id="engagementBreakdown"></div>
+                        </div>
+                    </div>
+
+                    <!-- Content Format Performance -->
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-photo-video"></i> Content Format Performance</div>
+                                <div class="analytics-section-subtitle">Which content types drive the best engagement</div>
+                            </div>
+                        </div>
+                        <div id="contentFormatPerformance"></div>
+                    </div>
+
+                    <!-- Top Performing Posts -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-trophy" style="color: #f59e0b; margin-right: 8px;"></i> Top Performing Posts</h3>
+                                <span class="analytics-section-subtitle">Ranked by weighted engagement score</span>
+                            </div>
+                            <div id="topPerformingPosts"></div>
+                        </div>
+                    </div>
+
+                    <!-- Posting Insights -->
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-clock"></i> Posting Insights</div>
+                                <div class="analytics-section-subtitle">Optimize your publishing schedule for maximum impact</div>
+                            </div>
+                        </div>
+                        <div id="postingInsights"></div>
+                    </div>
+
+                    <!-- Audience Insights -->
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-users"></i> Audience & Targeting Insights</div>
+                                <div class="analytics-section-subtitle">Understand who you're reaching and how to refine targeting</div>
+                            </div>
+                        </div>
+                        <div id="audienceInsights"></div>
+                    </div>
+
+                    <!-- Strategic Recommendations -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-lightbulb" style="color: #f59e0b; margin-right: 8px;"></i> Strategic Recommendations</h3>
+                                <span class="analytics-section-subtitle">Data-driven suggestions to improve your Instagram strategy</span>
+                            </div>
+                            <div class="recommendations-list" id="analyticsRecommendations"></div>
+                        </div>
+                    </div>
+            </section>
+
+            <!-- Calendar Page -->
+            <section class="page hidden" id="page-calendar">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addCalendarEntry">
+                            <i class="fas fa-plus"></i> Add Post
+                        </button>
+                        <button class="btn btn-secondary" id="bulkAddPosts">
+                            <i class="fas fa-layer-group"></i> Bulk Add
+                        </button>
+                        <div class="date-filter">
+                            <input type="date" id="calendarDateFilter" class="form-control">
+                            <button class="btn btn-sm" id="filterByDate">Filter</button>
+                            <button class="btn btn-sm" id="clearDateFilter">Clear</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calendar-tabs">
+                    <button class="tab-btn active" data-filter="all">All Posts</button>
+                    <button class="tab-btn" data-filter="pending">Pending</button>
+                    <button class="tab-btn" data-filter="scheduled">Scheduled</button>
+                    <button class="tab-btn" data-filter="posted">Posted</button>
+                    <button class="tab-btn" data-filter="failed">Failed</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="calendarTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Scheduled Date</th>
+                                <th>Topic</th>
+                                <th>Product</th>
+                                <th>Media Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarTableBody">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span class="showing-info" id="calendarShowingInfo">Showing 0 entries</span>
+                    <div class="pagination" id="calendarPagination"></div>
+                </div>
+            </section>
+
+            <!-- Workflow Page -->
+            <section class="page hidden" id="page-workflow">
+                <div class="workflow-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Start New Workflow</h3>
+                        </div>
+                        <form id="workflowForm" class="workflow-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Scheduled Date</label>
+                                    <input type="date" name="scheduled_date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Media Type</label>
+                                    <select name="media_type" class="form-control">
+                                        <option value="image">Image</option>
+                                        <option value="video">Video</option>
+                                        <option value="carousel">Carousel</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Topic</label>
+                                <input type="text" name="topic" class="form-control" placeholder="e.g., Modern Living Room Design" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Product</label>
+                                <input type="text" name="product" class="form-control" placeholder="e.g., Custom Kitchens">
+                            </div>
+                            <div class="form-group">
+                                <label>Target Audience</label>
+                                <input type="text" name="audience" class="form-control" placeholder="e.g., Homeowners in UAE">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nationality</label>
+                                    <input type="text" name="nationality" class="form-control" placeholder="e.g., Emirati">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age Group</label>
+                                    <input type="text" name="age_group" class="form-control" placeholder="e.g., 25-45">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Call to Action (CTA)</label>
+                                <textarea name="cta" class="form-control" rows="2" placeholder="e.g., Visit our showroom today!"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Media File</label>
+                                <div class="file-upload-area" id="workflowMediaUpload">
+                                    <input type="file" name="media_file" id="workflowMediaFile" class="file-input" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime">
+                                    <label for="workflowMediaFile" class="file-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span class="file-text">Click to upload or drag & drop</span>
+                                        <span class="file-hint">JPEG, PNG, GIF, WEBP, MP4 (max 100MB)</span>
+                                    </label>
+                                    <div class="file-preview" id="workflowMediaPreview"></div>
+                                </div>
+                                <input type="hidden" name="media_link" id="workflowMediaUrl">
+                                <input type="hidden" name="s3_key" id="workflowS3Key">
+                                <input type="hidden" name="media_url" id="workflowMediaUrlFull">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-play"></i> Start Workflow
+                                </button>
+                                <button type="reset" class="btn btn-secondary">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Workflow Controls</h3>
+                        </div>
+                        <div class="workflow-controls">
+                            <div class="control-item">
+                                <h4>Run Daily Workflow</h4>
+                                <p>Process all pending posts scheduled for today</p>
+                                <button class="btn btn-success" id="runDailyBtn">
+                                    <i class="fas fa-calendar-day"></i> Run Today's Posts
+                                </button>
+                            </div>
+                            <div class="control-item">
+                                <h4>Run by Date</h4>
+                                <p>Process posts for a specific date</p>
+                                <div class="inline-form">
+                                    <input type="date" id="workflowDate" class="form-control">
+                                    <button class="btn btn-info" id="runByDateBtn">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="control-item">
+                                <h4>Run by Entry ID</h4>
+                                <p>Start workflow for a specific calendar entry</p>
+                                <div class="inline-form">
+                                    <input type="number" id="workflowEntryId" class="form-control" placeholder="Entry ID">
+                                    <button class="btn btn-info" id="runByIdBtn">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Workflow Status</h3>
+                        <div class="inline-form">
+                            <input type="text" id="sessionIdInput" class="form-control" placeholder="Session ID">
+                            <button class="btn btn-sm" id="checkStatusBtn">Check Status</button>
+                        </div>
+                    </div>
+                    <div class="workflow-status" id="workflowStatus">
+                        <p class="text-muted">Enter a session ID to check workflow status</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tracking Page -->
+            <section class="page hidden" id="page-tracking">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshTracking">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-secondary" id="exportTracking">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="trackingTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Media ID</th>
+                                <th>Published At</th>
+                                <th>Topic</th>
+                                <th>Post Kind</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trackingTableBody">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state hidden" id="trackingEmpty">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Published Posts Yet</h3>
+                    <p>Published posts will appear here after successful Instagram publishing</p>
+                </div>
+            </section>
+
+            <!-- Metrics Page -->
+            <section class="page hidden" id="page-metrics">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshAllMetrics">
+                            <i class="fas fa-sync-alt"></i> Refresh All Metrics
+                        </button>
+                    </div>
+                </div>
+
+                <div class="metrics-overview" id="metricsOverview">
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-eye"></i></div>
+                        <div class="metric-value" id="totalViews">0</div>
+                        <div class="metric-label">Total Views</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-users"></i></div>
+                        <div class="metric-value" id="totalReach">0</div>
+                        <div class="metric-label">Total Reach</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-heart"></i></div>
+                        <div class="metric-value" id="totalLikes">0</div>
+                        <div class="metric-label">Total Likes</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-comment"></i></div>
+                        <div class="metric-value" id="totalComments">0</div>
+                        <div class="metric-label">Total Comments</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-share"></i></div>
+                        <div class="metric-value" id="totalShares">0</div>
+                        <div class="metric-label">Total Shares</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-bookmark"></i></div>
+                        <div class="metric-value" id="totalSaved">0</div>
+                        <div class="metric-label">Total Saved</div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Posts Metrics</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="metricsTable">
+                            <thead>
+                                <tr>
+                                    <th>Media ID</th>
+                                    <th>Topic</th>
+                                    <th>Views</th>
+                                    <th>Reach</th>
+                                    <th>Likes</th>
+                                    <th>Comments</th>
+                                    <th>Shares</th>
+                                    <th>Saved</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody id="metricsTableBody">
+                                <!-- Data populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Approvals Page -->
+            <section class="page hidden" id="page-approvals">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshApprovals">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="approvals-grid" id="approvalsGrid">
+                    <!-- Approval cards populated by JS -->
+                </div>
+                <div class="empty-state hidden" id="approvalsEmpty">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No Pending Approvals</h3>
+                    <p>All content has been reviewed. New approvals will appear here.</p>
+                </div>
+            </section>
+
+            <!-- Tasks Page -->
+            <section class="page hidden" id="page-tasks">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshTasks">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="tasksTable">
+                        <thead>
+                            <tr>
+                                <th>Task ID</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Completed At</th>
+                                <th>Duration</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTableBody">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state hidden" id="tasksEmpty">
+                    <i class="fas fa-tasks"></i>
+                    <h3>No Active Tasks</h3>
+                    <p>Agent tasks will appear here when workflows are running</p>
+                </div>
+            </section>
+
+            <!-- Logs Page -->
+            <section class="page hidden" id="page-logs">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshLogs">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-danger" id="clearLogs">
+                            <i class="fas fa-trash"></i> Clear Logs
+                        </button>
+                    </div>
+                </div>
+
+                <div class="logs-container" id="logsContainer">
+                    <!-- Logs populated by JS -->
+                </div>
+                <div class="empty-state hidden" id="logsEmpty">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No Errors</h3>
+                    <p>System is running smoothly with no errors logged</p>
+                </div>
+            </section>
+
+            <!-- Settings Page -->
+            <section class="page hidden" id="page-settings">
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>API Configuration</h3>
+                        </div>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>API Base URL</label>
+                                <input type="url" id="apiBaseUrl" class="form-control" value="">
+                                <small>The URL of your Social Media Agent API</small>
+                            </div>
+                            <div class="form-group">
+                                <label>API Key (optional)</label>
+                                <input type="password" id="apiKey" class="form-control" placeholder="Enter API key if required">
+                            </div>
+                            <button class="btn btn-primary" id="saveApiSettings">
+                                <i class="fas fa-save"></i> Save Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Current Configuration</h3>
+                            <button class="btn btn-sm" id="refreshConfig">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="config-display" id="configDisplay">
+                            <!-- Config populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Scheduler Control</h3>
+                        </div>
+                        <div class="scheduler-control">
+                            <div class="scheduler-status" id="schedulerStatus">
+                                <!-- Status populated by JS -->
+                            </div>
+                            <div class="scheduler-actions">
+                                <button class="btn btn-success" id="triggerSchedulerBtn">
+                                    <i class="fas fa-bolt"></i> Trigger Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>System Information</h3>
+                        </div>
+                        <div class="system-info" id="systemInfo">
+                            <!-- System info populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Add/Edit Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="postModalTitle">Add New Post</h3>
+                <button class="modal-close" id="closePostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="postForm">
+                    <input type="hidden" name="id" id="postId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Scheduled Date *</label>
+                            <input type="date" name="scheduled_date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Media Type</label>
+                            <select name="media_type" class="form-control">
+                                <option value="image">Image</option>
+                                <option value="video">Video</option>
+                                <option value="carousel">Carousel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Topic *</label>
+                        <input type="text" name="topic" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Product</label>
+                        <input type="text" name="product" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Audience</label>
+                        <input type="text" name="audience" class="form-control">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nationality</label>
+                            <input type="text" name="nationality" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Age Group</label>
+                            <input type="text" name="age_group" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Call to Action</label>
+                        <textarea name="cta" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Media File</label>
+                        <div class="file-upload-area" id="postMediaUpload">
+                            <input type="file" name="media_file" id="postMediaFile" class="file-input" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime">
+                            <label for="postMediaFile" class="file-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="file-text">Click to upload or drag & drop</span>
+                                <span class="file-hint">JPEG, PNG, GIF, WEBP, MP4</span>
+                            </label>
+                            <div class="file-preview" id="postMediaPreview"></div>
+                        </div>
+                        <input type="hidden" name="media_link" id="postMediaUrl">
+                        <input type="hidden" name="s3_key" id="postS3Key">
+                        <input type="hidden" name="media_url" id="postMediaUrlFull">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelPostModal">Cancel</button>
+                <button class="btn btn-primary" id="savePost">Save Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Add Modal -->
+    <div class="modal" id="bulkModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>Bulk Add Posts</h3>
+                <button class="modal-close" id="closeBulkModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Paste JSON array of posts or upload a JSON file</p>
+                <div class="form-group">
+                    <label>JSON Data</label>
+                    <textarea id="bulkJsonInput" class="form-control code-input" rows="15" placeholder='[
+  {
+    "scheduled_date": "2026-02-15",
+    "topic": "Modern Living Room",
+    "product": "Furniture",
+    "audience": "Homeowners",
+    "cta": "Shop now!",
+    "media_link": "https://...",
+    "media_type": "image"
+  }
+]'></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Or Upload JSON File</label>
+                    <input type="file" id="bulkFileInput" accept=".json" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBulkModal">Cancel</button>
+                <button class="btn btn-primary" id="submitBulkAdd">
+                    <i class="fas fa-upload"></i> Add Posts
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Confirm Action</h3>
+                <button class="modal-close" id="closeConfirmModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelConfirm">Cancel</button>
+                <button class="btn btn-danger" id="confirmAction">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/workflow.js"></script>
+    <script src="js/tracking.js"></script>
+    <script src="js/metrics.js"></script>
+    <script src="js/approvals.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/logs.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
