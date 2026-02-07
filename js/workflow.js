@@ -149,31 +149,13 @@ const Workflow = {
         }
 
         try {
-            showLoading(`Starting workflow for entry #${entryId}...`);
-            // Fetch entry data first, then start workflow
-            const entry = await api.getCalendarEntry(entryId);
+            showLoading(`Starting workflow for entry #${entryId}... This may take a few minutes.`);
             
-            if (!entry) {
-                throw new Error(`Entry #${entryId} not found`);
-            }
-            
-            // Start workflow with entry data
-            const workflowData = {
-                scheduled_date: entry.scheduled_date,
-                topic: entry.topic,
-                product: entry.product,
-                audience: entry.audience,
-                cta: entry.cta,
-                nationality: entry.nationality,
-                age_group: entry.age_group,
-                media_link: entry.media_link || entry.media_url,
-                media_type: entry.media_type
-            };
-            
-            const result = await api.startWorkflow(workflowData);
+            // Use the direct start-by-id endpoint (handles everything server-side)
+            const result = await api.startWorkflowById(entryId);
             hideLoading();
             
-            showToast(`Workflow for entry #${entryId} started!`, 'success');
+            showToast(`Workflow for entry #${entryId} completed!`, 'success');
             
             if (result.session_id) {
                 $('sessionIdInput').value = result.session_id;
@@ -183,6 +165,7 @@ const Workflow = {
         } catch (error) {
             hideLoading();
             showToast(`Failed to start workflow: ${error.message}`, 'error');
+            this.displayError(error.message);
         }
     },
 

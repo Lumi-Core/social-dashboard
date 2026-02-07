@@ -31,6 +31,7 @@ const Settings = {
         on('saveApiSettings', 'click', () => this.saveApiSettings());
         on('refreshConfig', 'click', () => this.loadConfig());
         on('triggerSchedulerBtn', 'click', () => this.triggerScheduler());
+        on('cleanDbBtn', 'click', () => this.cleanDatabase());
     },
 
     /**
@@ -201,6 +202,55 @@ const Settings = {
         } catch (error) {
             hideLoading();
             showToast(`Failed to trigger scheduler: ${error.message}`, 'error');
+        }
+    },
+
+    /**
+     * Clean database tables
+     */
+    async cleanDatabase() {
+        const tables = $('cleanDbTables') ? $('cleanDbTables').value : 'all';
+        const tableLabel = tables === 'all' ? 'ALL tables' : tables === 'calendar' ? 'Calendar table' : 'Tracking table';
+        
+        if (!confirm(`⚠️ Are you sure you want to clean ${tableLabel}?\n\nThis will permanently delete all data and cannot be undone!`)) {
+            return;
+        }
+
+        // Double confirmation for all tables
+        if (tables === 'all') {
+            if (!confirm('This will delete ALL calendar entries AND tracking records. Are you absolutely sure?')) {
+                return;
+            }
+        }
+
+        const resultContainer = $('cleanDbResult');
+
+        try {
+            showLoading('Cleaning database...');
+            const result = await api.cleanDatabase(tables);
+            hideLoading();
+
+            if (result.success) {
+                let summary = '<div style="padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; color: var(--success);">';
+                summary += '<strong><i class="fas fa-check-circle"></i> Database cleaned successfully!</strong><br>';
+                
+                if (result.details) {
+                    for (const [table, info] of Object.entries(result.details)) {
+                        summary += `<small>${table}: ${info.deleted} rows deleted</small><br>`;
+                    }
+                }
+                summary += '</div>';
+                
+                if (resultContainer) resultContainer.innerHTML = summary;
+                showToast('Database cleaned successfully!', 'success');
+            }
+        } catch (error) {
+            hideLoading();
+            const errorHtml = `<div style="padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; color: var(--danger);">
+                <strong><i class="fas fa-times-circle"></i> Failed:</strong> ${error.message}
+            </div>`;
+            if (resultContainer) resultContainer.innerHTML = errorHtml;
+            showToast(`Failed to clean database: ${error.message}`, 'error');
         }
     },
 };

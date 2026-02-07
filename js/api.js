@@ -85,13 +85,13 @@ class ApiService {
     /**
      * Make a POST request
      */
-    async post(endpoint, data = {}) {
+    async post(endpoint, data = {}, timeout = 30000) {
         try {
             const response = await this.fetchWithTimeout(`${this.baseUrl}${endpoint}`, {
                 method: 'POST',
                 headers: this.getHeaders(),
                 body: JSON.stringify(data),
-            });
+            }, timeout);
             
             if (!response.ok) {
                 const errorText = await response.text();
@@ -252,19 +252,27 @@ class ApiService {
     // =========================================================================
 
     async startWorkflow(data) {
-        return this.post('/api/workflow/start', data);
+        return this.post('/api/workflow/start', data, 300000);
     }
 
     async startWorkflowById(entryId) {
-        return this.post(`/api/workflow/start-by-id/${entryId}`);
+        return this.post(`/api/workflow/start-by-id/${entryId}`, {}, 300000);
     }
 
     async runDailyWorkflow() {
-        return this.post('/api/workflow/run-daily');
+        return this.post('/api/workflow/run-daily', {}, 300000);
     }
 
     async runWorkflowByDate(date) {
-        return this.post(`/api/workflow/run-by-date/${date}`);
+        return this.post(`/api/workflow/run-by-date/${date}`, {}, 300000);
+    }
+
+    // =========================================================================
+    // DATABASE MANAGEMENT ENDPOINTS
+    // =========================================================================
+
+    async cleanDatabase(tables = 'all') {
+        return this.post('/api/database/clean', { tables });
     }
 
     async getWorkflowStatus(sessionId) {
