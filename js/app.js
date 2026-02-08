@@ -60,13 +60,44 @@ const App = {
                 const page = item.dataset.page;
                 if (page) {
                     this.navigateTo(page);
+                    // Close sidebar on mobile after navigation
+                    if (window.innerWidth <= 768) {
+                        this.closeMobileSidebar();
+                    }
                 }
             });
         });
 
-        // Sidebar toggle
+        // Sidebar toggle (desktop collapse)
         on('sidebarToggle', 'click', () => {
-            $('sidebar').classList.toggle('collapsed');
+            if (window.innerWidth > 768) {
+                $('sidebar').classList.toggle('collapsed');
+            } else {
+                this.toggleMobileSidebar();
+            }
+        });
+
+        // Mobile hamburger menu button
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                this.toggleMobileSidebar();
+            });
+        }
+
+        // Sidebar overlay click to close
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                this.closeMobileSidebar();
+            });
+        }
+
+        // Close sidebar on window resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                this.closeMobileSidebar();
+            }
         });
 
         // Global refresh button
@@ -96,6 +127,33 @@ const App = {
 
         // Close confirm modal
         on('closeConfirmModal', 'click', () => closeModal('confirmModal'));
+    },
+
+    /**
+     * Toggle mobile sidebar
+     */
+    toggleMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const isOpen = sidebar.classList.contains('open');
+        if (isOpen) {
+            this.closeMobileSidebar();
+        } else {
+            sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    },
+
+    /**
+     * Close mobile sidebar
+     */
+    closeMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
     },
 
     /**

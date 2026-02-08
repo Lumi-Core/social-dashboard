@@ -272,6 +272,12 @@ input, select, textarea {
     z-index: 100;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .header-left h1 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -1777,6 +1783,47 @@ textarea.form-control {
 }
 
 /* ============================================
+   Mobile Menu Button (hidden on desktop)
+   ============================================ */
+.mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--gray-100);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    color: var(--gray-700);
+    font-size: 1.2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.mobile-menu-btn:hover {
+    background: var(--gray-200);
+    color: var(--gray-900);
+}
+
+/* Sidebar Overlay (mobile) */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ============================================
    Responsive Styles
    ============================================ */
 @media (max-width: 1200px) {
@@ -1797,55 +1844,482 @@ textarea.form-control {
     :root {
         --sidebar-width: 0;
     }
-    
+
+    /* --- Sidebar --- */
     .sidebar {
         transform: translateX(-100%);
+        width: 260px;
     }
     
     .sidebar.open {
         transform: translateX(0);
-        width: 260px;
     }
-    
+
+    .sidebar-toggle {
+        display: none;
+    }
+
+    /* --- Main Content --- */
     .main-content {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
-    
+
+    /* --- Header --- */
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
     .top-header {
-        padding: 0 16px;
+        padding: 0 12px;
+        height: 60px;
+        gap: 8px;
     }
-    
+
+    .header-left h1 {
+        font-size: 1.15rem;
+    }
+
+    .breadcrumb {
+        display: none;
+    }
+
     .search-box {
         display: none;
     }
-    
-    .page-content {
-        padding: 16px;
+
+    .header-right {
+        gap: 8px;
     }
-    
+
+    .user-menu span {
+        display: none;
+    }
+
+    .user-menu {
+        padding: 6px;
+    }
+
+    /* --- Page Content --- */
+    .page-content {
+        padding: 12px;
+    }
+
+    /* --- Stats Grid --- */
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
-    
+
+    .stat-card {
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+
+    .stat-info h3 {
+        font-size: 1.4rem;
+    }
+
+    /* --- Cards --- */
+    .card-header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .card-header h3 {
+        font-size: 1rem;
+    }
+
+    .chart-card {
+        padding: 16px;
+    }
+
+    /* --- Health Grid --- */
+    .health-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .health-item {
+        padding: 12px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    /* --- Quick Actions --- */
+    .action-btn {
+        padding: 12px 14px;
+        font-size: 0.9rem;
+    }
+
+    /* --- Activity Section --- */
+    .activity-section {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .scheduler-info {
+        padding: 16px;
+    }
+
+    .today-posts {
+        padding: 16px;
+    }
+
+    /* --- Page Header --- */
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .header-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .date-filter {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .date-filter .form-control {
+        width: 100%;
+        flex: 1;
+    }
+
+    /* --- Tabs --- */
+    .calendar-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .calendar-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* --- Tables --- */
+    .table-container {
+        border-radius: var(--border-radius);
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    .table-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* --- Forms --- */
     .form-row {
         grid-template-columns: 1fr;
+        gap: 0;
     }
-    
-    .settings-grid {
+
+    .form-control {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .inline-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .inline-form .form-control {
+        width: 100%;
+    }
+
+    /* --- File Upload --- */
+    .file-upload-area {
+        padding: 20px 14px;
+    }
+
+    .file-label i {
+        font-size: 2rem;
+    }
+
+    /* --- Workflow --- */
+    .workflow-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
-    
+
+    .workflow-form {
+        padding: 16px;
+    }
+
+    .workflow-controls {
+        padding: 16px;
+    }
+
+    .control-item {
+        padding: 14px;
+    }
+
+    .workflow-status {
+        padding: 16px;
+        min-height: auto;
+    }
+
+    /* --- Metrics --- */
+    .metrics-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .metric-card {
+        padding: 16px;
+    }
+
+    .metric-value {
+        font-size: 1.4rem;
+    }
+
+    .metric-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    /* --- Approvals --- */
     .approvals-grid {
         grid-template-columns: 1fr;
     }
-    
-    .metrics-overview {
-        grid-template-columns: repeat(2, 1fr);
+
+    .approval-header {
+        padding: 14px;
+        flex-direction: column;
+        gap: 8px;
     }
-    
+
+    .approval-content {
+        padding: 14px;
+    }
+
+    .approval-actions {
+        padding: 12px 14px;
+        flex-direction: column;
+    }
+
+    /* --- Settings --- */
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-form {
+        padding: 16px;
+    }
+
+    .config-display {
+        padding: 16px;
+    }
+
+    .config-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .info-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .scheduler-control {
+        padding: 16px;
+    }
+
+    .system-info {
+        padding: 16px;
+    }
+
+    /* --- Logs --- */
+    .logs-container {
+        padding: 14px;
+        border-radius: var(--border-radius);
+    }
+
+    .log-entry {
+        font-size: 0.78rem;
+        padding: 10px 12px;
+        word-break: break-word;
+    }
+
+    /* --- Modals --- */
     .modal-content {
         width: 95%;
-        margin: 10px;
+        max-height: 85vh;
+        margin: auto 10px;
+    }
+
+    .modal-content.modal-lg {
+        max-width: 95%;
+    }
+
+    .modal-header {
+        padding: 16px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .modal-footer {
+        padding: 12px 16px;
+        flex-direction: column-reverse;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* --- Toast --- */
+    .toast-container {
+        top: auto;
+        bottom: 12px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .toast {
+        min-width: auto;
+        max-width: 100%;
+        font-size: 0.9rem;
+    }
+
+    /* --- Empty State --- */
+    .empty-state {
+        padding: 40px 16px;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+    }
+
+    /* --- Buttons --- */
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .btn-lg {
+        padding: 12px 20px;
+    }
+
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* --- Status badges --- */
+    .post-item {
+        flex-wrap: wrap;
+    }
+
+    .post-status {
+        margin-left: 0;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metrics-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+
+    .stat-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .stat-info p {
+        font-size: 0.8rem;
+    }
+
+    .header-left h1 {
+        font-size: 1rem;
+    }
+
+    .page-content {
+        padding: 10px;
+    }
+
+    .charts-row {
+        gap: 12px;
+    }
+
+    .card-header h3 {
+        font-size: 0.9rem;
+    }
+
+    .scheduler-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .health-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
