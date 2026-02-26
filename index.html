@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Agent Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/analytics.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Agentic" class="logo-img">
+                <span>Social Media Agent</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-menu">
+            <ul class="nav-list">
+                <li class="nav-item active" data-page="dashboard">
+                    <a href="#dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="analytics">
+                    <a href="#analytics">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Analytics Insights</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="calendar">
+                    <a href="#calendar">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Content Calendar</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="workflow">
+                    <a href="#workflow">
+                        <i class="fas fa-cogs"></i>
+                        <span>Workflow</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="tracking">
+                    <a href="#tracking">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Post Tracking</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="metrics">
+                    <a href="#metrics">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram Metrics</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="approvals">
+                    <a href="#approvals">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Approvals</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="tasks">
+                    <a href="#tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>Agent Tasks</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="alerts">
+                    <a href="#alerts">
+                        <i class="fas fa-bell"></i>
+                        <span>Alerts</span>
+                        <span class="nav-badge hidden" id="alertsNavBadge">0</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="reports">
+                    <a href="#reports">
+                        <i class="fas fa-file-chart-line"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="logs">
+                    <a href="#logs">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Error Logs</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <a href="#settings">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="health-indicator" id="healthIndicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content" id="mainContent">
+        
+        <header class="top-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <span class="breadcrumb" id="breadcrumb">Home / Dashboard</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." id="globalSearch">
+                </div>
+                <button class="btn btn-icon" id="refreshBtn" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="btn btn-icon" id="notificationBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="User" class="avatar">
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content" id="pageContent">
+            
+            <section class="page" id="page-dashboard">
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-scheduled">0</h3>
+                            <p>Scheduled Posts</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Today</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-published">0</h3>
+                            <p>Published Posts</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>This Week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-pending">0</h3>
+                            <p>Pending Approval</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-clock"></i>
+                            <span>Awaiting</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-workflows">0</h3>
+                            <p>Total Workflows</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-history"></i>
+                            <span>All Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card wide">
+                        <div class="card-header">
+                            <h3><span class="live-dot"></span> System Health Status</h3>
+                            <button class="btn btn-sm" id="refreshHealthBtn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="health-grid" id="healthGrid">
+                            
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="action-btn" id="runDailyWorkflow">
+                                <i class="fas fa-play"></i>
+                                <span>Run Daily Workflow</span>
+                            </button>
+                            <button class="action-btn" id="addNewPost">
+                                <i class="fas fa-plus"></i>
+                                <span>Add New Post</span>
+                            </button>
+                            <button class="action-btn" id="refreshMetrics">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Refresh Metrics</span>
+                            </button>
+                            <button class="action-btn" id="viewPendingApprovals">
+                                <i class="fas fa-check-circle"></i>
+                                <span>View Approvals</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Scheduler Status</h3>
+                            <button class="btn btn-sm btn-primary" id="triggerScheduler">
+                                <i class="fas fa-bolt"></i> Trigger Now
+                            </button>
+                        </div>
+                        <div class="scheduler-info" id="schedulerInfo">
+                            
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Today's Posts</h3>
+                            <a href="#calendar" class="link">View All</a>
+                        </div>
+                        <div class="today-posts" id="todayPosts">
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-analytics">
+                    <div class="page-header">
+                        <div class="header-actions analytics-header-controls">
+                            <select id="analyticsDateRange">
+                                <option value="all">All Time</option>
+                                <option value="30">Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="7">Last 7 Days</option>
+                            </select>
+                            <button class="btn btn-secondary" id="exportAnalyticsReport">
+                                <i class="fas fa-download"></i> Export Report
+                            </button>
+                            <button class="btn btn-primary" id="refreshAnalytics">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-chart-pie"></i> Key Performance Indicators</div>
+                                <div class="analytics-section-subtitle">Core metrics that define your Instagram performance</div>
+                            </div>
+                        </div>
+                        <div class="analytics-kpi-grid" id="analyticsKPIGrid"></div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-hand-pointer" style="color: var(--primary); margin-right: 8px;"></i> Engagement Breakdown</h3>
+                                <span class="analytics-section-subtitle">How your audience interacts with your content</span>
+                            </div>
+                            <div class="engagement-breakdown-card" id="engagementBreakdown"></div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-photo-video"></i> Content Format Performance</div>
+                                <div class="analytics-section-subtitle">Which content types drive the best engagement</div>
+                            </div>
+                        </div>
+                        <div id="contentFormatPerformance"></div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-trophy" style="color: #f59e0b; margin-right: 8px;"></i> Top Performing Posts</h3>
+                                <span class="analytics-section-subtitle">Ranked by weighted engagement score</span>
+                            </div>
+                            <div id="topPerformingPosts"></div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-clock"></i> Posting Insights</div>
+                                <div class="analytics-section-subtitle">Optimize your publishing schedule for maximum impact</div>
+                            </div>
+                        </div>
+                        <div id="postingInsights"></div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="analytics-section-header">
+                            <div>
+                                <div class="analytics-section-title"><i class="fas fa-users"></i> Audience & Targeting Insights</div>
+                                <div class="analytics-section-subtitle">Understand who you're reaching and how to refine targeting</div>
+                            </div>
+                        </div>
+                        <div id="audienceInsights"></div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-lightbulb" style="color: #f59e0b; margin-right: 8px;"></i> Strategic Recommendations</h3>
+                                <span class="analytics-section-subtitle">Data-driven suggestions to improve your Instagram strategy</span>
+                            </div>
+                            <div class="recommendations-list" id="analyticsRecommendations"></div>
+                        </div>
+                    </div>
+
+                    <!-- Best Times to Post -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-clock" style="color:#06b6d4;margin-right:8px;"></i> Best Times to Post</h3>
+                                <button class="btn btn-sm" id="loadBestTimesBtn"><i class="fas fa-sync-alt"></i> Load</button>
+                            </div>
+                            <div id="bestTimesContainer">
+                                <div class="analytics-empty-state"><i class="fas fa-clock"></i><p>Click Load to analyze your best posting times</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics by Tags -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-tags" style="color:#22c55e;margin-right:8px;"></i> Performance by Tags</h3>
+                                <button class="btn btn-sm" id="loadTagsAnalyticsBtn"><i class="fas fa-sync-alt"></i> Load</button>
+                            </div>
+                            <div id="tagAnalyticsContainer">
+                                <div class="analytics-empty-state"><i class="fas fa-tags"></i><p>Click Load to see performance breakdown by content tags</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compare Posts -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-balance-scale" style="color:#f59e0b;margin-right:8px;"></i> Compare Posts</h3>
+                                <button class="btn btn-sm btn-warning" id="openCompareModalBtn"><i class="fas fa-plus"></i> Compare</button>
+                            </div>
+                            <div id="comparePostsContainer">
+                                <div class="analytics-empty-state"><i class="fas fa-balance-scale"></i><p>Select posts to compare their performance side-by-side</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compare Periods -->
+                    <div class="analytics-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-calendar-week" style="color:#6366f1;margin-right:8px;"></i> Period Comparison</h3>
+                            </div>
+                            <div style="padding:16px;">
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px;">
+                                    <div>
+                                        <label style="font-weight:600;color:var(--text-secondary);font-size:0.85rem;">Period 1</label>
+                                        <div style="display:flex;gap:8px;margin-top:6px;">
+                                            <input type="date" id="period1Start" class="form-control">
+                                            <input type="date" id="period1End" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="font-weight:600;color:var(--text-secondary);font-size:0.85rem;">Period 2</label>
+                                        <div style="display:flex;gap:8px;margin-top:6px;">
+                                            <input type="date" id="period2Start" class="form-control">
+                                            <input type="date" id="period2End" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" id="comparePeriodsBtn"><i class="fas fa-chart-bar"></i> Compare Periods</button>
+                                <div id="periodsCompareResult" style="margin-top:16px;"></div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+
+            <section class="page hidden" id="page-calendar">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addCalendarEntry">
+                            <i class="fas fa-plus"></i> Add Post
+                        </button>
+                        <button class="btn btn-secondary" id="bulkAddPosts">
+                            <i class="fas fa-layer-group"></i> Bulk Add
+                        </button>
+                        <button class="btn btn-success" id="exportExcel">
+                            <i class="fas fa-file-excel"></i> Export Excel
+                        </button>
+                        <button class="btn btn-info" id="importExcelBtn">
+                            <i class="fas fa-file-upload"></i> Import Excel
+                        </button>
+                        <button class="btn btn-sm btn-secondary" id="downloadTemplate" title="Download import template">
+                            <i class="fas fa-download"></i> Template
+                        </button>
+                        <input type="file" id="importExcelFile" accept=".xlsx,.xls" style="display:none;">
+                        <div class="date-filter">
+                            <input type="date" id="calendarDateFilter" class="form-control">
+                            <button class="btn btn-sm" id="filterByDate">Filter</button>
+                            <button class="btn btn-sm" id="clearDateFilter">Clear</button>
+                        </div>
+                        <div class="tag-filter" style="display:flex;align-items:center;gap:8px;">
+                            <select id="calendarTagFilter" class="form-control" style="width:auto;min-width:140px;">
+                                <option value="">All Tags</option>
+                            </select>
+                            <button class="btn btn-sm" id="filterByTag"><i class="fas fa-tag"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calendar-tabs">
+                    <button class="tab-btn active" data-filter="all">All Posts</button>
+                    <button class="tab-btn" data-filter="pending">Pending</button>
+                    <button class="tab-btn" data-filter="scheduled">Scheduled</button>
+                    <button class="tab-btn" data-filter="posted">Posted</button>
+                    <button class="tab-btn" data-filter="failed">Failed</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="calendarTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Scheduled Date</th>
+                                <th>Topic</th>
+                                <th>Product</th>
+                                <th>Media Type</th>
+                                <th>Tags</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarTableBody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span class="showing-info" id="calendarShowingInfo">Showing 0 entries</span>
+                    <div class="pagination" id="calendarPagination"></div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-workflow">
+                <div class="workflow-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Start New Workflow</h3>
+                        </div>
+                        <form id="workflowForm" class="workflow-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Scheduled Date</label>
+                                    <input type="date" name="scheduled_date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Media Type</label>
+                                    <select name="media_type" class="form-control">
+                                        <option value="image">Image</option>
+                                        <option value="video">Video</option>
+                                        <option value="carousel">Carousel</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Topic</label>
+                                <input type="text" name="topic" class="form-control" placeholder="e.g., Modern Living Room Design" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Product</label>
+                                <input type="text" name="product" class="form-control" placeholder="e.g., Custom Kitchens">
+                            </div>
+                            <div class="form-group">
+                                <label>Target Audience</label>
+                                <input type="text" name="audience" class="form-control" placeholder="e.g., Homeowners in UAE">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nationality</label>
+                                    <input type="text" name="nationality" class="form-control" placeholder="e.g., Emirati">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age Group</label>
+                                    <input type="text" name="age_group" class="form-control" placeholder="e.g., 25-45">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Call to Action (CTA)</label>
+                                <textarea name="cta" class="form-control" rows="2" placeholder="e.g., Visit our showroom today!"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Media File</label>
+                                <div class="file-upload-area" id="workflowMediaUpload">
+                                    <input type="file" name="media_file" id="workflowMediaFile" class="file-input" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime">
+                                    <label for="workflowMediaFile" class="file-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span class="file-text">Click to upload or drag & drop</span>
+                                        <span class="file-hint">JPEG, PNG, GIF, WEBP, MP4 (max 100MB)</span>
+                                    </label>
+                                    <div class="file-preview" id="workflowMediaPreview"></div>
+                                </div>
+                                <input type="hidden" name="media_link" id="workflowMediaUrl">
+                                <input type="hidden" name="s3_key" id="workflowS3Key">
+                                <input type="hidden" name="media_url" id="workflowMediaUrlFull">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-play"></i> Start Workflow
+                                </button>
+                                <button type="reset" class="btn btn-secondary">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Workflow Controls</h3>
+                        </div>
+                        <div class="workflow-controls">
+                            <div class="control-item">
+                                <h4>Run Daily Workflow</h4>
+                                <p>Process all pending posts scheduled for today</p>
+                                <button class="btn btn-success" id="runDailyBtn">
+                                    <i class="fas fa-calendar-day"></i> Run Today's Posts
+                                </button>
+                            </div>
+                            <div class="control-item">
+                                <h4>Run by Date</h4>
+                                <p>Process posts for a specific date</p>
+                                <div class="inline-form">
+                                    <input type="date" id="workflowDate" class="form-control">
+                                    <button class="btn btn-info" id="runByDateBtn">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="control-item">
+                                <h4>Run by Entry ID</h4>
+                                <p>Start workflow for a specific calendar entry</p>
+                                <div class="inline-form">
+                                    <input type="number" id="workflowEntryId" class="form-control" placeholder="Entry ID">
+                                    <button class="btn btn-info" id="runByIdBtn">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="control-item">
+                                <h4>Caption Variants</h4>
+                                <p>Generate multiple caption options for an entry</p>
+                                <div class="inline-form">
+                                    <input type="number" id="variantsEntryId" class="form-control" placeholder="Entry ID">
+                                    <button class="btn btn-warning" id="generateVariantsBtn">
+                                        <i class="fas fa-layer-group"></i> Variants
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="control-item">
+                                <h4>AI Suggestions</h4>
+                                <p>Get hooks, hashtags & action ideas from AI</p>
+                                <button class="btn btn-secondary" id="openSuggestionsBtn">
+                                    <i class="fas fa-lightbulb"></i> Open Suggestions
+                                </button>
+                            </div>
+                            <div class="control-item">
+                                <h4>Schedule Optimizer</h4>
+                                <p>Check if a proposed time is optimal</p>
+                                <button class="btn btn-secondary" id="openRescheduleBtn">
+                                    <i class="fas fa-clock"></i> Check Time
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Workflow Status</h3>
+                        <div class="inline-form">
+                            <input type="text" id="sessionIdInput" class="form-control" placeholder="Session ID">
+                            <button class="btn btn-sm" id="checkStatusBtn">Check Status</button>
+                        </div>
+                    </div>
+                    <div class="workflow-status" id="workflowStatus">
+                        <p class="text-muted">Enter a session ID to check workflow status</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-tracking">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshTracking">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-secondary" id="exportTracking">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="trackingTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Media ID</th>
+                                <th>Published At</th>
+                                <th>Topic</th>
+                                <th>Post Kind</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trackingTableBody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state hidden" id="trackingEmpty">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Published Posts Yet</h3>
+                    <p>Published posts will appear here after successful Instagram publishing</p>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-metrics">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshAllMetrics">
+                            <i class="fas fa-sync-alt"></i> Refresh All Metrics
+                        </button>
+                    </div>
+                </div>
+
+                <div class="metrics-overview" id="metricsOverview">
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-eye"></i></div>
+                        <div class="metric-value" id="totalViews">0</div>
+                        <div class="metric-label">Total Views</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-users"></i></div>
+                        <div class="metric-value" id="totalReach">0</div>
+                        <div class="metric-label">Total Reach</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-heart"></i></div>
+                        <div class="metric-value" id="totalLikes">0</div>
+                        <div class="metric-label">Total Likes</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-comment"></i></div>
+                        <div class="metric-value" id="totalComments">0</div>
+                        <div class="metric-label">Total Comments</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-share"></i></div>
+                        <div class="metric-value" id="totalShares">0</div>
+                        <div class="metric-label">Total Shares</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon"><i class="fas fa-bookmark"></i></div>
+                        <div class="metric-value" id="totalSaved">0</div>
+                        <div class="metric-label">Total Saved</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon" style="color:#f59e0b;"><i class="fas fa-play-circle"></i></div>
+                        <div class="metric-value" id="totalPlays">0</div>
+                        <div class="metric-label">Total Plays (Videos)</div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-area"></i> Audience Retention (Videos)</h3>
+                    </div>
+                    <div class="card-body" style="padding: 20px;">
+                        <div id="retentionChartContainer" style="position: relative; height: 300px;">
+                            <canvas id="retentionChart"></canvas>
+                            <div id="retentionEmpty" class="text-center text-muted hidden" style="padding: 40px;">
+                                <i class="fas fa-video" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                                No video retention data available yet.<br>
+                                Retention data appears after video posts are published and tracked.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Posts Metrics</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="metricsTable">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Media ID</th>
+                                    <th>Topic</th>
+                                    <th>Views</th>
+                                    <th>Reach</th>
+                                    <th>Likes</th>
+                                    <th>Comments</th>
+                                    <th>Shares</th>
+                                    <th>Saved</th>
+                                    <th>Follows</th>
+                                    <th>Profile Visits</th>
+                                    <th>Plays</th>
+                                    <th>Avg Watch</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="metricsTableBody">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-approvals">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshApprovals">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="approvals-grid" id="approvalsGrid">
+                    
+                </div>
+                <div class="empty-state hidden" id="approvalsEmpty">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No Pending Approvals</h3>
+                    <p>All content has been reviewed. New approvals will appear here.</p>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-tasks">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshTasks">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="tasksTable">
+                        <thead>
+                            <tr>
+                                <th>Task ID</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Completed At</th>
+                                <th>Duration</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTableBody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state hidden" id="tasksEmpty">
+                    <i class="fas fa-tasks"></i>
+                    <h3>No Active Tasks</h3>
+                    <p>Agent tasks will appear here when workflows are running</p>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-logs">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshLogs">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-danger" id="clearLogs">
+                            <i class="fas fa-trash"></i> Clear Logs
+                        </button>
+                    </div>
+                </div>
+
+                <div class="logs-container" id="logsContainer">
+                    
+                </div>
+                <div class="empty-state hidden" id="logsEmpty">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No Errors</h3>
+                    <p>System is running smoothly with no errors logged</p>
+                </div>
+            </section>
+
+            <!-- ═══════ ALERTS PAGE ═══════ -->
+            <section class="page hidden" id="page-alerts">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="refreshAlerts">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-secondary" id="dismissAllAlertsBtn">
+                            <i class="fas fa-check-double"></i> Dismiss All
+                        </button>
+                    </div>
+                </div>
+
+                <div class="alerts-filter-bar" style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;">
+                    <select id="alertTypeFilter" class="form-control" style="width:auto;">
+                        <option value="">All Types</option>
+                        <option value="error">Error</option>
+                        <option value="warning">Warning</option>
+                        <option value="info">Info</option>
+                        <option value="success">Success</option>
+                    </select>
+                    <select id="alertStatusFilter" class="form-control" style="width:auto;">
+                        <option value="active">Active</option>
+                        <option value="dismissed">Dismissed</option>
+                        <option value="">All</option>
+                    </select>
+                </div>
+
+                <div id="alertsList" class="alerts-list"></div>
+                <div class="empty-state hidden" id="alertsEmpty">
+                    <i class="fas fa-bell-slash"></i>
+                    <h3>No Alerts</h3>
+                    <p>All clear! No alerts at this time.</p>
+                </div>
+            </section>
+
+            <!-- ═══════ REPORTS PAGE ═══════ -->
+            <section class="page hidden" id="page-reports">
+                <div class="page-header">
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="generateReportBtn">
+                            <i class="fas fa-plus"></i> Generate Report
+                        </button>
+                        <button class="btn btn-secondary" id="refreshReports">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Generate Report Form -->
+                <div class="card mb-4" id="reportGenerateCard" style="display:none;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-file-plus"></i> New Report</h3>
+                        <button class="btn btn-sm btn-secondary" id="cancelReportForm"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="card-body" style="padding:20px;">
+                        <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+                            <div class="form-group">
+                                <label>Report Type</label>
+                                <select id="reportType" class="form-control">
+                                    <option value="performance">Performance</option>
+                                    <option value="content">Content</option>
+                                    <option value="engagement">Engagement</option>
+                                    <option value="full">Full Summary</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" id="reportStartDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" id="reportEndDate" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes (optional)</label>
+                            <input type="text" id="reportNotes" class="form-control" placeholder="Custom notes for this report...">
+                        </div>
+                        <button class="btn btn-primary" id="submitReportBtn">
+                            <i class="fas fa-rocket"></i> Generate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reports List -->
+                <div class="table-container">
+                    <table class="data-table" id="reportsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Period</th>
+                                <th>Created</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="empty-state hidden" id="reportsEmpty">
+                    <i class="fas fa-file-chart-line"></i>
+                    <h3>No Reports Yet</h3>
+                    <p>Generate your first performance report above</p>
+                </div>
+            </section>
+
+            <!-- Report Details Modal -->
+            <div class="modal" id="reportModal">
+                <div class="modal-overlay"></div>
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h3 id="reportModalTitle">Report Details</h3>
+                        <button class="modal-close" id="closeReportModal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="reportModalBody" style="max-height:70vh;overflow-y:auto;"></div>
+                </div>
+            </div>
+
+            <section class="page hidden" id="page-settings">
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>API Configuration</h3>
+                        </div>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>API Base URL</label>
+                                <input type="url" id="apiBaseUrl" class="form-control" value="">
+                                <small>The URL of your Social Media Agent API</small>
+                            </div>
+                            <div class="form-group">
+                                <label>API Key (optional)</label>
+                                <input type="password" id="apiKey" class="form-control" placeholder="Enter API key if required">
+                            </div>
+                            <button class="btn btn-primary" id="saveApiSettings">
+                                <i class="fas fa-save"></i> Save Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Current Configuration</h3>
+                            <button class="btn btn-sm" id="refreshConfig">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="config-display" id="configDisplay">
+                            
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Scheduler Control</h3>
+                        </div>
+                        <div class="scheduler-control">
+                            <div class="scheduler-status" id="schedulerStatus">
+                                
+                            </div>
+                            <div class="scheduler-actions">
+                                <button class="btn btn-success" id="triggerSchedulerBtn">
+                                    <i class="fas fa-bolt"></i> Trigger Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>System Information</h3>
+                        </div>
+                        <div class="system-info" id="systemInfo">
+                            
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-magic"></i> Generation Instructions</h3>
+                        </div>
+                        <div class="settings-form">
+                            <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.9rem;">
+                                Custom instructions appended to the AI system prompt when generating content.
+                                Use this to control tone, style, language, or any specific guidelines.
+                            </p>
+                            <div class="form-group">
+                                <label>Instructions</label>
+                                <textarea id="generationInstructions" class="form-control" rows="6" placeholder="e.g., Always write in Arabic. Use formal tone. Include emoji. Focus on luxury and elegance..."></textarea>
+                            </div>
+                            <button class="btn btn-primary" id="saveGenerationInstructions">
+                                <i class="fas fa-save"></i> Save Instructions
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="grid-column: 1 / -1;">
+                        <div class="card-header">
+                            <h3><i class="fas fa-layer-group"></i> Platform-Specific Instructions</h3>
+                        </div>
+                        <div class="settings-form">
+                            <p style="color:var(--text-muted);margin-bottom:16px;font-size:0.9rem;">
+                                Override generation instructions for specific platforms (Instagram, TikTok, etc.)
+                            </p>
+                            <div class="platform-tabs" id="platformTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;"></div>
+                            <div id="platformInstructionsForm">
+                                <div class="form-group">
+                                    <label id="platformInstructionsLabel">Platform Instructions</label>
+                                    <textarea id="platformInstructionsText" class="form-control" rows="5" placeholder="Select a platform above..."></textarea>
+                                </div>
+                                <button class="btn btn-primary" id="savePlatformInstructions" disabled>
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                                <span id="currentPlatformName" data-platform="" style="display:none;"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <h3><i class="fas fa-database"></i> Database Management</h3>
+                            <button class="btn btn-sm" id="refreshDbStats" title="Refresh stats">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="settings-form">
+                            <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 0.9rem;">
+                                <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                                Warning: These actions permanently delete data and cannot be undone.
+                            </p>
+
+                            <div id="dbTablesList" style="margin-bottom:16px;">
+                                <div class="db-table-row" style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:rgba(30,41,59,0.5);border-radius:8px;margin-bottom:8px;">
+                                    <div>
+                                        <strong style="color:var(--text-primary);"><i class="fas fa-calendar-alt" style="color:var(--primary);margin-right:8px;"></i>social_media_calendar</strong>
+                                        <span class="text-muted" style="margin-left:12px;font-size:0.85rem;" id="dbCalendarCount">— rows</span>
+                                    </div>
+                                    <button class="btn btn-danger btn-sm" data-clean-table="calendar" title="Clear Calendar">
+                                        <i class="fas fa-trash-alt"></i> Clear
+                                    </button>
+                                </div>
+                                <div class="db-table-row" style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:rgba(30,41,59,0.5);border-radius:8px;margin-bottom:8px;">
+                                    <div>
+                                        <strong style="color:var(--text-primary);"><i class="fas fa-chart-line" style="color:#f59e0b;margin-right:8px;"></i>published_posts_tracking</strong>
+                                        <span class="text-muted" style="margin-left:12px;font-size:0.85rem;" id="dbTrackingCount">— rows</span>
+                                    </div>
+                                    <button class="btn btn-danger btn-sm" data-clean-table="tracking" title="Clear Tracking">
+                                        <i class="fas fa-trash-alt"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="dbStatusBreakdown" style="margin-bottom:16px;padding:12px;background:rgba(30,41,59,0.3);border-radius:8px;font-size:0.85rem;color:var(--text-muted);">
+                                Loading stats...
+                            </div>
+
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button class="btn btn-danger" id="cleanDbBtn">
+                                    <i class="fas fa-trash-alt"></i> Clear ALL Tables
+                                </button>
+                            </div>
+                            <div id="cleanDbResult" style="margin-top: 12px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="modal" id="postModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="postModalTitle">Add New Post</h3>
+                <button class="modal-close" id="closePostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="postForm">
+                    <input type="hidden" name="id" id="postId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Scheduled Date *</label>
+                            <input type="date" name="scheduled_date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Publish Time *</label>
+                            <input type="time" name="scheduled_time" class="form-control" required>
+                            <small>When to publish the post (24h format)</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Media Type</label>
+                            <select name="media_type" class="form-control">
+                                <option value="image">Image</option>
+                                <option value="video">Video</option>
+                                <option value="carousel">Carousel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Topic *</label>
+                        <input type="text" name="topic" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Product</label>
+                        <input type="text" name="product" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Audience</label>
+                        <input type="text" name="audience" class="form-control">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nationality</label>
+                            <input type="text" name="nationality" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Age Group</label>
+                            <input type="text" name="age_group" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Call to Action</label>
+                        <textarea name="cta" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-tags"></i> Tags</label>
+                        <div class="tags-input-wrapper" id="tagsInputWrapper">
+                            <div class="tags-chips" id="tagsChips"></div>
+                            <input type="text" id="tagsTextInput" placeholder="Add tag, press Enter..." class="tags-text-input">
+                        </div>
+                        <input type="hidden" name="tags" id="postTagsHidden">
+                        <small>Press Enter or comma to add a tag</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Media File</label>
+                        <div class="file-upload-area" id="postMediaUpload">
+                            <input type="file" name="media_file" id="postMediaFile" class="file-input" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime">
+                            <label for="postMediaFile" class="file-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="file-text">Click to upload or drag & drop</span>
+                                <span class="file-hint">JPEG, PNG, GIF, WEBP, MP4</span>
+                            </label>
+                            <div class="file-preview" id="postMediaPreview"></div>
+                        </div>
+                        <input type="hidden" name="media_link" id="postMediaUrl">
+                        <input type="hidden" name="s3_key" id="postS3Key">
+                        <input type="hidden" name="media_url" id="postMediaUrlFull">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelPostModal">Cancel</button>
+                <button class="btn btn-primary" id="savePost">Save Post</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="bulkModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>Bulk Add Posts</h3>
+                <button class="modal-close" id="closeBulkModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Paste JSON array of posts or upload a JSON file</p>
+                <div class="form-group">
+                    <label>JSON Data</label>
+                    <textarea id="bulkJsonInput" class="form-control code-input" rows="15" placeholder='[
+  {
+    "scheduled_date": "2026-02-15",
+    "topic": "Modern Living Room",
+    "product": "Furniture",
+    "audience": "Homeowners",
+    "cta": "Shop now!",
+    "media_link": "https://...",
+    "media_type": "image"
+  }
+]'></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Or Upload JSON File</label>
+                    <input type="file" id="bulkFileInput" accept=".json" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBulkModal">Cancel</button>
+                <button class="btn btn-primary" id="submitBulkAdd">
+                    <i class="fas fa-upload"></i> Add Posts
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Confirm Action</h3>
+                <button class="modal-close" id="closeConfirmModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelConfirm">Cancel</button>
+                <button class="btn btn-danger" id="confirmAction">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Caption Variants Modal -->
+    <div class="modal" id="variantsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3><i class="fas fa-layer-group"></i> Caption Variants</h3>
+                <button class="modal-close" id="closeVariantsModal">&times;</button>
+            </div>
+            <div class="modal-body" id="variantsModalBody">
+                <div class="text-center text-muted" style="padding:30px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:2rem;margin-bottom:10px;display:block;"></i>
+                    Loading variants...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suggestions Modal -->
+    <div class="modal" id="suggestionsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3><i class="fas fa-lightbulb"></i> AI Suggestions</h3>
+                <button class="modal-close" id="closeSuggestionsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+                    <div class="form-group">
+                        <label>Topic</label>
+                        <input type="text" id="suggTopic" class="form-control" placeholder="e.g., Modern living room">
+                    </div>
+                    <div class="form-group">
+                        <label>Product</label>
+                        <input type="text" id="suggProduct" class="form-control" placeholder="e.g., Sofa">
+                    </div>
+                    <div class="form-group">
+                        <label>Audience</label>
+                        <input type="text" id="suggAudience" class="form-control" placeholder="e.g., Homeowners">
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;margin-bottom:20px;">
+                    <button class="btn btn-primary" id="getHookSuggestionsBtn"><i class="fas fa-bolt"></i> Hook Ideas</button>
+                    <button class="btn btn-secondary" id="getHashtagSuggestionsBtn"><i class="fas fa-hashtag"></i> Hashtags</button>
+                </div>
+                <div id="suggestionsResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Suggestion Modal -->
+    <div class="modal" id="rescheduleModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-clock"></i> Optimal Schedule Check</h3>
+                <button class="modal-close" id="closeRescheduleModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted" style="margin-bottom:12px;">Check if your proposed posting time is optimal based on historical performance.</p>
+                <div class="form-group">
+                    <label>Entry ID</label>
+                    <input type="number" id="rescheduleEntryId" class="form-control" placeholder="Calendar entry ID">
+                </div>
+                <div class="form-group">
+                    <label>Proposed Date & Time</label>
+                    <input type="datetime-local" id="rescheduleProposedTime" class="form-control">
+                </div>
+                <button class="btn btn-primary" id="checkRescheduleBtn"><i class="fas fa-search"></i> Analyze</button>
+                <div id="rescheduleResult" style="margin-top:16px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Comparison Modal -->
+    <div class="modal" id="compareModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3><i class="fas fa-balance-scale"></i> Compare Posts</h3>
+                <button class="modal-close" id="closeCompareModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Media IDs (comma-separated, 2–5 IDs)</label>
+                    <input type="text" id="compareMediaIds" class="form-control" placeholder="e.g., 17854321, 17854322">
+                </div>
+                <button class="btn btn-primary" id="runCompareBtn"><i class="fas fa-chart-bar"></i> Compare</button>
+                <div id="compareResult" style="margin-top:20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/workflow.js"></script>
+    <script src="js/tracking.js"></script>
+    <script src="js/metrics.js"></script>
+    <script src="js/approvals.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/logs.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/alerts.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
