@@ -32,7 +32,17 @@ const Alerts = {
     async loadAlerts() {
         try {
             showLoading('Loading alerts...');
-            this.alerts = await api.getAlerts(this.buildParams());
+            const response = await api.getAlerts(this.buildParams());
+            // Normalise: API may return an array directly, or wrap it
+            if (Array.isArray(response)) {
+                this.alerts = response;
+            } else if (response && Array.isArray(response.alerts)) {
+                this.alerts = response.alerts;
+            } else if (response && Array.isArray(response.data)) {
+                this.alerts = response.data;
+            } else {
+                this.alerts = [];
+            }
             this.updateBadge();
             this.render();
             hideLoading();
