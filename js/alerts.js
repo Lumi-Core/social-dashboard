@@ -77,13 +77,13 @@ const Alerts = {
     async dismissAll() {
         if (!confirm('Dismiss all active alerts?')) return;
         try {
-            showLoading('Dismissing all alerts...');
+            showBlockingLoader('Dismissing all alerts...');
             await api.dismissAllAlerts();
-            hideLoading();
+            hideBlockingLoader();
             showToast('All alerts dismissed', 'success');
             await this.loadAlerts();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to dismiss: ${error.message}`, 'error');
         }
     },

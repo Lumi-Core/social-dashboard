@@ -234,7 +234,49 @@ function closeAllModals() {
     document.body.style.overflow = '';
 }
 
+// --------------- Loading Indicators ---------------
+// showLoading / hideLoading: non-blocking top bar + small status text.
+// showBlockingLoader / hideBlockingLoader: full-page overlay for critical ops.
+
+let _loadingCount = 0;
+
 function showLoading(message = 'Loading...') {
+    _loadingCount++;
+    // Top progress bar
+    let bar = document.getElementById('topProgressBar');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'topProgressBar';
+        bar.className = 'top-progress-bar';
+        document.body.appendChild(bar);
+    }
+    bar.classList.add('active');
+
+    // Small inline status indicator (bottom-right)
+    let indicator = document.getElementById('loadingIndicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'loadingIndicator';
+        indicator.className = 'loading-indicator';
+        indicator.innerHTML = '<div class="loading-indicator-spinner"></div><span></span>';
+        document.body.appendChild(indicator);
+    }
+    indicator.querySelector('span').textContent = message;
+    indicator.classList.add('active');
+}
+
+function hideLoading() {
+    _loadingCount = Math.max(0, _loadingCount - 1);
+    if (_loadingCount > 0) return; // still loading something else
+
+    const bar = document.getElementById('topProgressBar');
+    if (bar) bar.classList.remove('active');
+
+    const indicator = document.getElementById('loadingIndicator');
+    if (indicator) indicator.classList.remove('active');
+}
+
+function showBlockingLoader(message = 'Please wait...') {
     const overlay = $('loadingOverlay');
     if (overlay) {
         overlay.querySelector('p').textContent = message;
@@ -242,7 +284,7 @@ function showLoading(message = 'Loading...') {
     }
 }
 
-function hideLoading() {
+function hideBlockingLoader() {
     const overlay = $('loadingOverlay');
     if (overlay) {
         overlay.classList.add('hidden');

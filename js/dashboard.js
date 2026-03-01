@@ -232,13 +232,13 @@ const Dashboard = {
 
     async runDailyWorkflow() {
         try {
-            showLoading('Starting daily workflow...');
+            showBlockingLoader('Starting daily workflow...');
             const result = await api.runDailyWorkflow();
-            hideLoading();
+            hideBlockingLoader();
             showToast('Daily workflow started successfully', 'success');
             this.loadStats();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to start workflow: ${error.message}`, 'error');
         }
     },
@@ -257,13 +257,13 @@ const Dashboard = {
 
     async triggerScheduler() {
         try {
-            showLoading('Triggering scheduler...');
+            showBlockingLoader('Triggering scheduler...');
             await api.triggerScheduler();
-            hideLoading();
+            hideBlockingLoader();
             showToast('Scheduler triggered successfully', 'success');
             this.loadSchedulerInfo();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to trigger scheduler: ${error.message}`, 'error');
         }
     },

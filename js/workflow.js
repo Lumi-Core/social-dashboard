@@ -63,15 +63,29 @@ const Workflow = {
     async startWorkflow() {
         const data = getFormData('workflowForm');
 
-        if (!data.scheduled_date || !data.topic) {
-            showToast('Please fill in required fields (Scheduled Date and Topic)', 'warning');
+        // Validate all required fields
+        const missing = [];
+        if (!data.scheduled_date) missing.push('Scheduled Date');
+        if (!data.topic)          missing.push('Topic');
+        if (!data.product)        missing.push('Product');
+        if (!data.audience)       missing.push('Target Audience');
+        if (!data.cta)            missing.push('Call to Action');
+        if (!data.media_link && !data.media_url) missing.push('Media File');
+
+        if (missing.length > 0) {
+            showToast(`Please fill in: ${missing.join(', ')}`, 'warning');
             return;
         }
 
+        // Ensure media_link is set (from file upload or manual)
+        if (!data.media_link && data.media_url) {
+            data.media_link = data.media_url;
+        }
+
         try {
-            showLoading('Starting workflow...');
+            showBlockingLoader('Starting workflow...');
             const result = await api.startWorkflow(data);
-            hideLoading();
+            hideBlockingLoader();
             
             showToast('Workflow started successfully!', 'success');
             
@@ -82,21 +96,21 @@ const Workflow = {
             
             resetForm('workflowForm');
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to start workflow: ${error.message}`, 'error');
         }
     },
 
     async runDaily() {
         try {
-            showLoading('Running daily workflow...');
+            showBlockingLoader('Running daily workflow...');
             const result = await api.runDailyWorkflow();
-            hideLoading();
+            hideBlockingLoader();
             
             showToast('Daily workflow started!', 'success');
             this.displayStatus(result);
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to run daily workflow: ${error.message}`, 'error');
         }
     },
@@ -110,14 +124,14 @@ const Workflow = {
         }
 
         try {
-            showLoading(`Running workflow for ${date}...`);
+            showBlockingLoader(`Running workflow for ${date}...`);
             const result = await api.runWorkflowByDate(date);
-            hideLoading();
+            hideBlockingLoader();
             
             showToast(`Workflow for ${date} started!`, 'success');
             this.displayStatus(result);
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to run workflow: ${error.message}`, 'error');
         }
     },
@@ -131,9 +145,9 @@ const Workflow = {
         }
 
         try {
-            showLoading(`Starting workflow for entry #${entryId}...`);
+            showBlockingLoader(`Starting workflow for entry #${entryId}...`);
             const result = await api.startWorkflowById(entryId);
-            hideLoading();
+            hideBlockingLoader();
             
             showToast(`Workflow for entry #${entryId} started!`, 'success');
             
@@ -143,7 +157,7 @@ const Workflow = {
             
             this.displayStatus(result);
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to start workflow: ${error.message}`, 'error');
         }
     },
@@ -312,13 +326,13 @@ const Workflow = {
 
     async selectVariant(entryId, variantIndex) {
         try {
-            showLoading('Selecting variant...');
+            showBlockingLoader('Selecting variant...');
             await api.selectCaptionVariant(entryId, variantIndex);
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Variant ${variantIndex + 1} selected as caption!`, 'success');
             closeModal('variantsModal');
         } catch (e) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to select variant: ${e.message}`, 'error');
         }
     },

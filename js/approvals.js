@@ -117,13 +117,13 @@ const Approvals = {
         if (!confirm('Approve this post for publishing?')) return;
 
         try {
-            showLoading('Approving & Publishing...');
+            showBlockingLoader('Approving & Publishing...');
             const result = await api.approvePost(entryId);
-            hideLoading();
+            hideBlockingLoader();
             showToast(result.message || 'Post approved successfully!', 'success');
             await App.refreshAll();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to approve: ${error.message}`, 'error');
         }
     },
@@ -145,22 +145,22 @@ const Approvals = {
             if (!confirm('No feedback provided. Reject without auto-revision?')) return;
             
             try {
-                showLoading('Rejecting...');
+                showBlockingLoader('Rejecting...');
                 const result = await api.rejectPost(entryId, '');
-                hideLoading();
+                hideBlockingLoader();
                 showToast(result.message || 'Post rejected', 'info');
                 await App.refreshAll();
             } catch (error) {
-                hideLoading();
+                hideBlockingLoader();
                 showToast(`Failed to reject: ${error.message}`, 'error');
             }
             return;
         }
 
         try {
-            showLoading('Rejecting & revising content...');
+            showBlockingLoader('Rejecting & revising content...');
             const result = await api.rejectPost(entryId, feedback);
-            hideLoading();
+            hideBlockingLoader();
             
             if (result.new_status === 'Awaiting Approval') {
                 showToast('Content revised! New version is ready for review.', 'success');
@@ -172,7 +172,7 @@ const Approvals = {
             }
             await App.refreshAll();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to reject: ${error.message}`, 'error');
         }
     },
@@ -192,9 +192,9 @@ const Approvals = {
         }
 
         try {
-            showLoading('Revising content with your feedback...');
+            showBlockingLoader('Revising content with your feedback...');
             const result = await api.submitRevision(entryId, feedback);
-            hideLoading();
+            hideBlockingLoader();
             
             if (result.new_caption) {
                 showToast('Content revised successfully! Review the new version.', 'success');
@@ -206,7 +206,7 @@ const Approvals = {
             }
             await App.refreshAll();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to submit revision: ${error.message}`, 'error');
         }
     },

@@ -316,7 +316,7 @@ const Calendar = {
         data.tags = [...this._tagsStore];
 
         try {
-            showLoading('Saving...');
+            showBlockingLoader('Saving...');
             
             if (id) {
                 // Update existing via PUT
@@ -329,9 +329,9 @@ const Calendar = {
             
             closeModal('postModal');
             this.loadCalendar();
-            hideLoading();
+            hideBlockingLoader();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to save: ${error.message}`, 'error');
         }
     },
@@ -342,28 +342,28 @@ const Calendar = {
         }
 
         try {
-            showLoading('Deleting...');
+            showBlockingLoader('Deleting...');
             await api.deleteCalendarEntry(id);
-            hideLoading();
+            hideBlockingLoader();
             showToast('Entry deleted successfully', 'success');
             this.loadCalendar();
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to delete: ${error.message}`, 'error');
         }
     },
 
     async runWorkflow(id) {
         try {
-            showLoading('Starting workflow...');
+            showBlockingLoader('Starting workflow...');
             const result = await api.startWorkflowById(id);
-            hideLoading();
+            hideBlockingLoader();
             showToast('⚙️ Workflow started! Processing in background...', 'success');
             this.loadCalendar();
             
             this.pollEntryStatus(id, 0);
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to start workflow: ${error.message}`, 'error');
         }
     },

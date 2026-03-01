@@ -57,14 +57,14 @@ const Reports = {
         }
 
         try {
-            showLoading('Generating report...');
+            showBlockingLoader('Generating report...');
             const result = await api.generateReport({
                 report_type: type,
                 start_date: startDate,
                 end_date: endDate,
                 notes: notes || undefined,
             });
-            hideLoading();
+            hideBlockingLoader();
             showToast('Report generated successfully!', 'success');
             this.toggleGenerateForm(false);
             await this.loadReports();
@@ -73,7 +73,7 @@ const Reports = {
                 await this.viewReport(result.id);
             }
         } catch (error) {
-            hideLoading();
+            hideBlockingLoader();
             showToast(`Failed to generate report: ${error.message}`, 'error');
         }
     },

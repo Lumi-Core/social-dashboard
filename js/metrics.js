@@ -9,7 +9,6 @@ const Metrics = {
         shares: 0,
         saved: 0,
     },
-    retentionChart: null,
     initialized: false,
 
     init() {
@@ -40,7 +39,6 @@ const Metrics = {
             this.posts = posts;
             this.calculateTotals();
             this.renderOverview();
-            this.renderRetentionGraph();
             this.renderTable();
             
             hideLoading();
@@ -86,136 +84,13 @@ const Metrics = {
     },
 
     _isVideoPost(p) {
-        const type = (p.media_type || p.post_kind || '').toLowerCase();
+        const type = (p.post_kind || p.media_type || '').toLowerCase();
         if (['video', 'reel', 'reels'].includes(type)) return true;
-        
-        if (p.plays || p.total_plays || p.avg_watch_time) return true;
         return false;
     },
 
     _getPlays(p) {
         return p.plays || p.total_plays || p.ig_reels_aggregated_all_plays_count || 0;
-    },
-
-    renderRetentionGraph() {
-        const canvas = $('retentionChart');
-        const emptyMsg = $('retentionEmpty');
-        if (!canvas) return;
-
-        const videoPosts = this.posts.filter(p => {
-            return this._isVideoPost(p) &&
-                   (p.views || this._getPlays(p) || p.reach || p.impressions);
-        });
-
-        if (videoPosts.length === 0) {
-            canvas.style.display = 'none';
-            if (emptyMsg) emptyMsg.classList.remove('hidden');
-            return;
-        }
-
-        canvas.style.display = 'block';
-        if (emptyMsg) emptyMsg.classList.add('hidden');
-
-        const labels = videoPosts.map(p => truncate(p.topic || `#${p.id}`, 20));
-        const viewsData = videoPosts.map(p => p.views || p.impressions || 0);
-        const reachData = videoPosts.map(p => p.reach || 0);
-        const playsData = videoPosts.map(p => this._getPlays(p));
-        const retentionRate = videoPosts.map(p => {
-            const views = p.views || p.impressions || 1;
-            const reach = p.reach || 0;
-            return reach > 0 ? Math.round((reach / views) * 100) : 0;
-        });
-
-        if (this.retentionChart) {
-            this.retentionChart.destroy();
-        }
-
-        const ctx = canvas.getContext('2d');
-        this.retentionChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Views',
-                        data: viewsData,
-                        backgroundColor: 'rgba(99, 102, 241, 0.7)',
-                        borderColor: 'rgba(99, 102, 241, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                    },
-                    {
-                        label: 'Reach',
-                        data: reachData,
-                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                        borderColor: 'rgba(16, 185, 129, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                    },
-                    {
-                        label: 'Plays',
-                        data: playsData,
-                        backgroundColor: 'rgba(245, 158, 11, 0.7)',
-                        borderColor: 'rgba(245, 158, 11, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                    },
-                    {
-                        label: 'Retention %',
-                        data: retentionRate,
-                        type: 'line',
-                        borderColor: 'rgba(239, 68, 68, 1)',
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                        borderWidth: 2,
-                        pointRadius: 4,
-                        pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-                        yAxisID: 'percentage',
-                        fill: true,
-                        tension: 0.3,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: { color: '#94a3b8', font: { size: 12 } }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleColor: '#e2e8f0',
-                        bodyColor: '#cbd5e1',
-                        borderColor: 'rgba(99, 102, 241, 0.3)',
-                        borderWidth: 1,
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: { color: '#94a3b8', font: { size: 11 } },
-                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                    },
-                    y: {
-                        ticks: { color: '#94a3b8' },
-                        grid: { color: 'rgba(148, 163, 184, 0.1)' },
-                        title: { display: true, text: 'Count', color: '#94a3b8' }
-                    },
-                    percentage: {
-                        position: 'right',
-                        min: 0,
-                        max: 100,
-                        ticks: { color: '#ef4444', callback: v => v + '%' },
-                        grid: { display: false },
-                        title: { display: true, text: 'Retention %', color: '#ef4444' }
-                    }
-                }
-            }
-        });
     },
 
     renderTable() {
@@ -236,7 +111,7 @@ const Metrics = {
         }
 
         tbody.innerHTML = this.posts.map(post => {
-            const kindRaw = (post.media_type || post.post_kind || '').toLowerCase();
+            const kindRaw = (post.post_kind || post.media_type || '').toLowerCase();
             const isVideo = this._isVideoPost(post);
             const isCarousel = kindRaw === 'carousel' && !isVideo;
 
