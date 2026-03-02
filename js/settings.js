@@ -23,17 +23,11 @@ const Settings = {
         on('saveGenerationInstructions', 'click', () => this.saveGenerationInstructions());
         on('cleanDbBtn', 'click', () => this.cleanDatabase('all'));
         on('refreshDbStats', 'click', () => this.loadDbStats());
-        on('savePlatformInstructions', 'click', () => this.savePlatformInstructions());
-
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('[data-clean-table]');
             if (btn) {
                 const table = btn.getAttribute('data-clean-table');
                 this.cleanDatabase(table);
-            }
-            const ptab = e.target.closest('[data-platform-tab]');
-            if (ptab) {
-                this.selectPlatformTab(ptab.getAttribute('data-platform-tab'));
             }
         });
     },
@@ -47,7 +41,6 @@ const Settings = {
         await this.loadSystemInfo();
         await this.loadSchedulerStatus();
         await this.loadGenerationInstructions();
-        await this.loadPlatformInstructions();
     },
 
     saveApiSettings() {
@@ -270,91 +263,6 @@ const Settings = {
             hideLoading();
             showToast(`Failed to clean database: ${error.message}`, 'error');
             if (resultDiv) resultDiv.innerHTML = `<div style="padding:10px;background:rgba(239,68,68,0.1);border-radius:8px;color:var(--danger);margin-top:8px;"><i class="fas fa-times-circle"></i> Error: ${escapeHtml(error.message)}</div>`;
-        }
-    },
-
-    // ── Platform-Specific Instructions ────────────────────────
-    _platformData: {},
-    _selectedPlatform: null,
-
-    async loadPlatformInstructions() {
-        const tabsEl = $('platformTabs');
-        if (!tabsEl) return;
-        try {
-            const data = await api.getAllPlatformInstructions();
-            // data is either an array or object keyed by platform
-            let platforms = [];
-            if (Array.isArray(data)) {
-                platforms = data;
-            } else if (data && typeof data === 'object') {
-                platforms = Object.keys(data).map(k => ({
-                    platform: k,
-                    instructions: typeof data[k] === 'string' ? data[k] : (data[k].instructions || ''),
-                }));
-            }
-
-            // Fallback known platforms if none returned
-            const knownPlatforms = ['instagram', 'tiktok', 'twitter', 'facebook', 'linkedin'];
-            if (!platforms.length) {
-                platforms = knownPlatforms.map(p => ({ platform: p, instructions: '' }));
-            }
-
-            // Store for later
-            this._platformData = {};
-            platforms.forEach(p => { this._platformData[p.platform] = p.instructions || ''; });
-
-            // Build tabs
-            tabsEl.innerHTML = platforms.map(p => `
-                <button class="btn btn-sm btn-secondary" data-platform-tab="${escapeHtml(p.platform)}" style="text-transform:capitalize;">
-                    <i class="fas fa-${p.platform === 'instagram' ? 'instagram' : p.platform === 'tiktok' ? 'music' : p.platform === 'twitter' ? 'twitter' : p.platform === 'facebook' ? 'facebook' : 'linkedin'} fa-brands"></i>
-                    ${capitalize(p.platform)}
-                </button>
-            `).join('');
-
-            // Select first
-            if (platforms.length) this.selectPlatformTab(platforms[0].platform);
-        } catch (e) {
-            if (tabsEl) tabsEl.innerHTML = '<span class="text-muted" style="font-size:0.85rem;">Platform instructions not available</span>';
-        }
-    },
-
-    selectPlatformTab(platform) {
-        this._selectedPlatform = platform;
-
-        // Highlight active tab
-        document.querySelectorAll('[data-platform-tab]').forEach(btn => {
-            btn.classList.toggle('btn-primary', btn.getAttribute('data-platform-tab') === platform);
-            btn.classList.toggle('btn-secondary', btn.getAttribute('data-platform-tab') !== platform);
-        });
-
-        const label = $('platformInstructionsLabel');
-        if (label) label.textContent = `${capitalize(platform)} Instructions`;
-
-        const textarea = $('platformInstructionsText');
-        if (textarea) textarea.value = this._platformData[platform] || '';
-
-        const saveBtn = $('savePlatformInstructions');
-        if (saveBtn) {
-            saveBtn.disabled = false;
-            const nameSpan = $('currentPlatformName');
-            if (nameSpan) nameSpan.setAttribute('data-platform', platform);
-        }
-    },
-
-    async savePlatformInstructions() {
-        const platform = this._selectedPlatform;
-        if (!platform) { showToast('Select a platform first', 'warning'); return; }
-        const text = $('platformInstructionsText');
-        if (!text) return;
-        try {
-            showLoading(`Saving ${platform} instructions...`);
-            await api.updatePlatformInstructions(platform, text.value);
-            this._platformData[platform] = text.value;
-            hideLoading();
-            showToast(`${capitalize(platform)} instructions saved!`, 'success');
-        } catch (e) {
-            hideLoading();
-            showToast(`Failed to save: ${e.message}`, 'error');
         }
     },
 };
